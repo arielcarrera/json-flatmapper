@@ -73,7 +73,7 @@
 		<junit.version>4.11</junit.version>
 
 		<jackson.fasterxml.version>2.8.1</jackson.fasterxml.version>
-
+		<flatmapper.version>1.0.0-SNAPSHOT</flatmapper.version>
 	</properties>
 	
 	<dependencies>
@@ -87,34 +87,32 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
-			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jackson.fasterxml.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.fasterxml.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
 			<version>${jackson.fasterxml.version}</version>
-			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.luckyend.flatmapper</groupId>
+			<artifactId>flatmapper</artifactId>
+			<version>${flatmapper.version}</version>
+		</dependency>
 		<!-- Testing -->
 		<dependency>
 			<groupId>junit</groupId>

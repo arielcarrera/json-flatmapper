@@ -17,13 +17,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.luckyend.flatmapper.FlatMapper;
 import com.luckyend.flatmapper.functions.DefaultFunctionMapFactory;
 import com.luckyend.flatmapper.functions.FunctionMapFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JsonFlatMapper {
+public class JsonFlatMapper implements FlatMapper<String> {
 	
 	private ObjectMapper mapper;
 	
@@ -33,8 +34,6 @@ public class JsonFlatMapper {
 		super();
 		initObjectMapper();
 	}
-
-
     
     public JsonFlatMapper(ObjectMapper omapper) {
 		super();
@@ -43,7 +42,7 @@ public class JsonFlatMapper {
 		functionMap = DefaultFunctionMapFactory.getDefaultInstance().getFunctionMap();
 	}
     
-    public JsonFlatMapper(FunctionMapFactory functionMapFactory) {
+    public JsonFlatMapper(FunctionMapFactory<Object> functionMapFactory) {
 		super();
 		log.warn("Default objetMapper is instantiated.");
 		initObjectMapper();
@@ -55,7 +54,7 @@ public class JsonFlatMapper {
 		}
 	}
     
-    public JsonFlatMapper(ObjectMapper omapper, FunctionMapFactory functionMapFactory) {
+    public JsonFlatMapper(ObjectMapper omapper, FunctionMapFactory<Object> functionMapFactory) {
 		super();
 		if (omapper == null) {
 			log.warn("ObjectMapper is null. Default objetMapper is instantiated.");
@@ -79,11 +78,19 @@ public class JsonFlatMapper {
 	}
 	
 	
-	public String convertFlatMapToJson(Map<String, Object> flatMapFrom) {
-        return convertFlatMapToJson(flatMapFrom, true);
+	/* (non-Javadoc)
+	 * @see com.luckyend.flatmapper.json.FlatMapper#convertFromFlatMap(java.util.Map)
+	 */
+	@Override
+	public String convertFromFlatMap(Map<String, Object> flatMapFrom) {
+        return convertFromFlatMap(flatMapFrom, true);
     }
 	
-	public String convertFlatMapToJson(Map<String, Object> flatMapFrom, boolean createCopy) {
+	/* (non-Javadoc)
+	 * @see com.luckyend.flatmapper.json.FlatMapper#convertFromFlatMap(java.util.Map, boolean)
+	 */
+	@Override
+	public String convertFromFlatMap(Map<String, Object> flatMapFrom, boolean createCopy) {
 		Map<String, Object> from;
 		if (createCopy) {
 			from = new HashMap<>(flatMapFrom);
@@ -115,7 +122,8 @@ public class JsonFlatMapper {
         return null;
     }
 
-	public Map<String, Object> convertJsonToFlatMap(String jsonFrom) {
+	@Override
+	public Map<String, Object> convertToFlatMap(String jsonFrom) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		// convert JSON string to flatMap
@@ -197,7 +205,7 @@ public class JsonFlatMapper {
 									log.error("Unrecognized function type, assigned as text");
 									tramite.put(key, (String)value);
 								} else {
-									Function f = functionMap.get(function);
+									Function<String[],Object> f = functionMap.get(function);
 									if (f == null){
 										log.error("Function {} not found, assigned as text", function);
 										tramite.put(key, (String)value);
